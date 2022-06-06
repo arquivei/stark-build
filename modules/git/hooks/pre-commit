@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# To install this hook run: 'make install-hooks' from the project's root directory.
+
+make git-execute-hook-precommit
