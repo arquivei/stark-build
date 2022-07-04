@@ -7,26 +7,27 @@
 ## further makefiles should be centralized in this file, when
 ## possible.
 
+
 ## Version of the project being built.
 ## Defaults to last git tag.
 VERSION  ?= $(shell git describe --tags --always 2> /dev/null || echo 'development')
+export VERSION
 
 ## List of enabled Stark Build System modules.
 ## The name of the modules are the directories inside 'modules/' directory.
 STARK_BUILD_MODULES ?= meta git golang cloudfunctions docker slack
 
-current_makefile_path = $(abspath $(lastword $(MAKEFILE_LIST)))
+starkbuild_makefile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+
 # STARK_BUILD_DIR is the directory of this file.
-STARK_BUILD_DIR = $(dir $(current_makefile_path))
+STARK_BUILD_DIR := $(dir $(starkbuild_makefile_path))
 
-main_makefile_path = $(abspath $(firstword $(MAKEFILE_LIST)))
-
+main_makefile_path := $(abspath $(firstword $(MAKEFILE_LIST)))
 # This is the directory of the project includind this makefile.
-PROJECT_DIR = $(dir $(main_makefile_path))
-
+PROJECT_DIR := $(dir $(main_makefile_path))
 
 ## Cache directory where modulos may store temporary files.
-STARK_BUILD_CACHE_DIR ?= .cache
+STARK_BUILD_CACHE_DIR ?= $(PROJECT_DIR)/.cache/
 
 ifeq ($(VERSION),)
 $(error VERSION is empty. Please set VERSION variable)
@@ -36,9 +37,16 @@ ifeq ($(STARK_BUILD_MODULES),)
 $(error STARK_BUILD_MODULES is empty. Please set STARK_BUILD_MODULES variable)
 endif
 
+# Forces uses of bash as the shell. This is important because it defaults to 'sh'
+# but there are differences among the linux distributions. In some 'sh' is an alias
+# do bash (arch linux, for example) and in others 'sh' is an alias to 'dash' (ubuntu).
+SHELL := /bin/bash
+
 $(info [Stark Build] Initializing Stark Build System...)
 $(info [Stark Build]   STARK_BUILD_DIR = $(STARK_BUILD_DIR))
 $(info [Stark Build]   STARK_BUILD_MODULES = $(STARK_BUILD_MODULES))
+$(info [Stark Build]   STARK_BUILD_CACHE_DIR = $(STARK_BUILD_CACHE_DIR))
+$(info [Stark Build]   PROJECT_DIR = $(PROJECT_DIR))
 $(info [Stark Build]   VERSION = $(VERSION))
 
 include $(foreach MOD,$(STARK_BUILD_MODULES),$(STARK_BUILD_DIR)/modules/$(MOD)/Makefile)
