@@ -12,7 +12,7 @@ This is a build system based on Makefiles that provides compilation and publishi
 Adds this repository as a submodule or download the files inside a directory.
 
 ```shell
-git submodule add git@bitbucket.org:arquivei/stark-build.git tooling/stark-build
+git submodule add git@github.com:arquivei/stark-build.git tooling/stark-build
 ```
 
 NOTE: The `tooling` sub-directory is just a suggestion that most projects follows.
