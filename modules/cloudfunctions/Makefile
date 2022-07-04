@@ -69,7 +69,7 @@ cloudfunctions-lint: $(foreach CLOUDFUNCTION,$(CLOUDFUNCTIONS),cloudfunction-lin
 
 cloudfunction-lint-%: cloudfunction-vendor-% ## Run golangci to specific cloud function
 	cd $(CLOUDFUNCTIONS_SRC_DIR)$(@:cloudfunction-lint-%=%) && \
-	$(PROJECT_DIR)$(GOLANGCI) --config $(PROJECT_DIR).golangci.yml run
+	$(GO_TOOLS_DIR)/golangci-lint --config $(PROJECT_DIR).golangci.yml run
 
 # publishing and deploy
 

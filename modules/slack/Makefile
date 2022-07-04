@@ -18,9 +18,12 @@ $(info [Stark Build] Initializing slack module...)
 ## Message that will be sent to slack
 SLACK_GIT_LOG ?= $(shell git log -1 | sed -e ':a' -e 'N' -e '$$!ba' -e 's/\n/\\n/g' -e 's/"/\\"/g')
 
+$(info [Stark Build]   SLACK_MESSAGE = $(SLACK_MESSAGE))
+$(info [Stark Build]   SLACK_WEBHOOK_URL = $(SLACK_WEBHOOK_URL))
+
 ## Posts a message to slack.
-.PHONY: notify-slack
-slack-send-message: require-SLACK_MESSAGE require-REMOTE require-SLACK_WEBHOOK_URL require-VERSION require-PROJECT require-BITBUCKET_BUILD_NUMBER
+.PHONY: slack-send-message
+slack-send-message: require-SLACK_MESSAGE require-SLACK_WEBHOOK_URL
 	GIT_LOG='$(SLACK_GIT_LOG)' \
 		envsubst < $(SLACK_MESSAGE) | \
 		curl \
