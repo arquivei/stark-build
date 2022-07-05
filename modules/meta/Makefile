@@ -21,14 +21,18 @@ require-%:
 print-%:
 	@ echo "${${*}}"
 
-## Updates Stark Build System.
-.PHONY: update-stark-build
-update-stark-build:
+## Updates the Stark Build System to match what the superproject expects.
+.PHONY: stark-build-sync
+stark-build-sync:
 	git submodule update --init --recursive $(STARK_BUILD_DIR)
+
+## Updates the Stark Build System to the latest version.
+.PHONY: stark-build-update
+stark-build-update:
+	cd $(STARK_BUILD_DIR) && git pull
 
 
 ## Prints this help.
-
 .PHONY: help
 help:
 	@awk -f $(STARK_BUILD_DIR)modules/meta/help.awk $(MAKEFILE_LIST)
