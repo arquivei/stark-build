@@ -4,30 +4,67 @@ This is a build system based on Makefiles that provides compilation and publishi
 
 ## Requirements
 
-- git
-- gnu make
+- [git](https://git-scm.com/)
+- [GNU Make](https://www.gnu.org/software/make/)
 
 ## Setup
 
-Adds this repository as a submodule or download the files inside a directory.
+Adds this repository as a submodule or download the files inside a directory. Using the submodule is the recommend way since it provides an auto-update target.
 
 ```shell
-git submodule add git@github.com:arquivei/stark-build.git tooling/stark-build
+git submodule add --depth=1 https://github.com/arquivei/stark-build.git tooling/stark-build
+```
+
+NOTE: We use `--depth=1` so we only download the last commit. You can remove this and download all files if you want to.
+
+NOTE: You can also add a submodule using the git URL, but the problem with this approach is the you will need to setup proper ssh authentication:
+
+```shell
+git submodule add --depth=1 git@github.com:arquivei/stark-build.git tooling/stark-build
 ```
 
 NOTE: The `tooling` sub-directory is just a suggestion that most projects follows.
 
-Import the primary Makefile into your Makefile
+Add the following snippet to your `Makefile`:
+
+```makefile
+## Initializes or syncronizes stark build directory.
+.PHONY: stark-build-sync
+stark-build-sync:
+	git submodule update --init --recursive --depth=1 tooling/stark-build/
+
+-include tooling/stark-build/Makefile
+```
+
+For example, your `Makefile` could look like this:
 
 ```makefile
 # File: Makefile
 
-## Your other stuff here
-## ...
+# Initialize your makefile normally.
+# ...
+
+# Optionaly initialize any variables you would
+# like to customize. For example:
+GO_SWAGGER_GEN := API
 
 # Enables stark-build
-include tooling/stark-build/Makefile
+.PHONY: stark-build-sync
+stark-build-sync:
+	git submodule update --init --recursive --depth=1 tooling/stark-build/
+
+-include tooling/stark-build/Makefile
+
+# Other makefile targets for your project.
 ```
+
+Then run in your terminal:
+
+```shell
+make stark-build-sync
+```
+
+Use this command as needed and inside CI/CD pipelines.
 
 ## Usage
 
