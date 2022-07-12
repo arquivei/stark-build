@@ -13,13 +13,13 @@ GO_TOOLS_ARCH ?= amd64
 GO_TOOLS_SWAGGER_VERSION ?= v0.29.0
 
 ## Selects golangci-lint version.
-GO_TOOLS_GOLANGCI_VERSION ?= 1.45.0
+GO_TOOLS_GOLANGCI_VERSION ?= 1.46.2
 
 ## Selects goose version.
-GO_TOOLS_GOOSE_VERSION ?= v3.5.3
+GO_TOOLS_GOOSE_VERSION ?= v3.6.1
 
 ## Selects go-junit-report version.
-GO_TOOLS_XUNIT_VERSION ?= v2.0.0-beta1
+GO_TOOLS_XUNIT_VERSION ?= v2.0.0
 
 $(info [Stark Build]   GO_TOOLS = $(GO_TOOLS))
 $(info [Stark Build]   GO_TOOLS_DIR = $(GO_TOOLS_DIR))
