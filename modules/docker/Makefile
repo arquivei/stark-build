@@ -28,7 +28,7 @@ DOCKER_IMAGES ?= $(shell ls ./cmd/ 2> /dev/null)
 ## Name of the project. This will compose the image's name like
 ## 'DOCKER_BASE_IMAGE/CMD:VERSION'. It defaults to the projets
 ## diretory name.
-DOCKER_BASE_IMAGE = $(notdir $(CURDIR))
+DOCKER_BASE_IMAGE ?= $(notdir $(CURDIR))
 
 ## GCR_BASE_URL is the googles registry prefix that will be
 ## pre-appended at the image name.
