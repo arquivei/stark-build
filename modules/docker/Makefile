@@ -28,7 +28,7 @@ DOCKER_IMAGES ?= $(shell ls ./cmd/ 2> /dev/null)
 ## Name of the project. This will compose the image's name like
 ## 'DOCKER_BASE_IMAGE/CMD:VERSION'. It defaults to the projets
 ## diretory name.
-DOCKER_BASE_IMAGE ?= $(notdir $(CURDIR))
+DOCKER_BASE_IMAGE ?= $(GO_PROJECT)
 
 ## GCR_BASE_URL is the googles registry prefix that will be
 ## pre-appended at the image name.
@@ -44,16 +44,17 @@ $(info [Stark Build]   GCR_BASE_URL = $(GCR_BASE_URL))
 ##
 ## Docker Module Targets
 
-## Builds all docker images
+## Builds all images listed in DOCKER_IMAGES var.
 .PHONY: docker-images
-docker-images: $(foreach img,$(DOCKER_IMAGES),docker-image-$(img)) ## Builds all images listed in DOCKER_IMAGES var.
+docker-images: $(foreach img,$(DOCKER_IMAGES),docker-image-$(img))
 
-out/docker_images.tar: docker-images ## Builds a tar file containing all images
+## Builds a tar file containing all images
+out/docker_images.tar: docker-images require-DOCKER_BASE_IMAGE
 	docker save --output $@ $(foreach img,$(DOCKER_IMAGES),$(DOCKER_BASE_IMAGE)/$(img):$(VERSION))
 
 ## Builds single docker image
 .PHONY: docker-image-%
-docker-image-%:
+docker-image-%: require-DOCKER_BASE_IMAGE
 	$(eval BINARY = $(@:docker-image-%=%))
 	$(eval DOCKERFILE = $(shell [ -f cmd/$(BINARY)/Dockerfile ] && echo cmd/$(BINARY)/Dockerfile || echo $(STARK_BUILD_DIR)modules/docker/Dockerfile ) )
 	docker build \
@@ -73,7 +74,7 @@ docker-publish: $(foreach img,$(DOCKER_IMAGES),docker-publish-version-$(img))
 docker-publish-latest: $(foreach img,$(DOCKER_IMAGES),docker-publish-latest-$(img))
 
 ## Publishes a single image using 'latest' as tag.
-docker-publish-latest-%:
+docker-publish-latest-%: require-DOCKER_BASE_IMAGE
 ifndef GCR_PROJECT
 	$(error Please set GCR_PROJECT variable)
 endif
@@ -84,7 +85,7 @@ endif
 	docker push $(REMOTE_TAG)
 
 ## Publishes the generated images into Google's Registry using version as tag.
-docker-publish-version-%:
+docker-publish-version-%: require-DOCKER_BASE_IMAGE
 ifndef GCR_PROJECT
 	$(error Please set GCR_PROJECT variable)
 endif
