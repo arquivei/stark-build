@@ -18,6 +18,15 @@ $(info [Stark Build] Initializing slack module...)
 ## Message that will be sent to slack
 SLACK_GIT_LOG ?= $(shell git log -1 | sed -e ':a' -e 'N' -e '$$!ba' -e 's/\n/\\n/g' -e 's/"/\\"/g')
 
+## Message in json format that will be posted to Slack.
+## The default value is just a simple message that could be used
+## initially but it's expected that each project will have it's own
+## message.
+## Before the message is sent the json is altered using envsubst
+## so we have minimal templating capabilities.
+## The variable SLACK_GIT_LOG is passed as GIT_LOG to the envsubst.
+SLACK_MESSAGE ?= $(STARK_BUILD_DIR)modules/slack/message.json
+
 $(info [Stark Build]   SLACK_MESSAGE = $(SLACK_MESSAGE))
 $(info [Stark Build]   SLACK_WEBHOOK_URL = $(SLACK_WEBHOOK_URL))
 

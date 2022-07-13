@@ -1,0 +1,42 @@
+{
+  "blocks": [
+    {
+      "type": "header",
+      "text": {
+        "type": "plain_text",
+        "text": "New release ready for deploy!",
+        "emoji": true
+      }
+    },
+    {
+      "type": "section",
+      "fields": [
+        {
+          "type": "mrkdwn",
+          "text": "*Project:*\n${GO_PROJECT}"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "*Version:*\n${VERSION}>"
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "Please monitor the deploy for any bugs or anomalies."
+      }
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "```${GIT_LOG}```"
+      }
+    }
+  ]
+}

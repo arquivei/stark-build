@@ -32,6 +32,8 @@ GOARCH      ?= amd64
 CGO_ENABLED ?= 0
 GO111MODULE ?= on
 
+export GO_MODULE
+export GO_PROJECT
 export GOOS
 export GOARCH
 export GO111MODULE
