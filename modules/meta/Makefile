@@ -13,12 +13,12 @@ $(info [Stark Build] Initializing meta module...)
 ## Requires that a specific variable is defined, example require-MYVAR
 require-%:
 	@ if [ "${${*}}" = "" ]; then \
-		echo "Environment variable $* not set"; \
+		echo "Variable $* not set"; \
 		exit 1; \
 	fi
 
 ## Prints the variable value, e.g., make print-VERSION
-print-%:
+print-%: require-%
 	@ echo "${${*}}"
 
 ## Updates the Stark Build System to the latest version.
