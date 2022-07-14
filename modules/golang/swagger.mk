@@ -38,4 +38,4 @@ endif
 	$(eval CMD=$(@:go-swagger-publish-%=%))
 	gsutil cp \
 		out/docs/$(CMD).swagger.json \
-		gs://$(GO_SWAGGER_PUBLISH_BUCKET)/$(GO_SWAGGER_PUBLISH_PATH)/$(PROJECT)-$(CMD).json
+		gs://$(GO_SWAGGER_PUBLISH_BUCKET)/$(GO_SWAGGER_PUBLISH_PATH)/$(GO_PROJECT)-$(CMD).json
