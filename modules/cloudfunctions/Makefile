@@ -75,21 +75,24 @@ cloudfunction-lint-%: cloudfunction-vendor-% ## Run golangci to specific cloud f
 
 .PHONY: cloudfunctions-publish cloudfunction-publish-%
 
+## Saves the cloud functions in GCS.
 cloudfunctions-publish: $(foreach CLOUDFUNCTION,$(CLOUDFUNCTIONS),cloudfunction-publish-$(CLOUDFUNCTION)) ## Publishes all cloud functions in a GCS bucket
 
-# CLOUDFUNCTIONS_GCS_BUCKET should be set as environment variable in the pipeline
+## Prefix for the path of the cloud function inside GCS.
 CLOUDFUNCTIONS_GCS_PREFIX ?= cloud-functions
 
 cloudfunction-publish-%: require-CLOUDFUNCTIONS_GCS_BUCKET
 	$(eval CLOUDFUNCTION=$(@:cloudfunction-publish-%=%))
 	gsutil cp \
 		$(CLOUDFUNCTIONS_BIN_DIR)$(CLOUDFUNCTION).zip \
-		gs://$(CLOUDFUNCTIONS_GCS_BUCKET)/$(CLOUDFUNCTIONS_GCS_PREFIX)/$(PROJECT)/$(CLOUDFUNCTION)/$(VERSION)/function.zip
+		gs://$(CLOUDFUNCTIONS_GCS_BUCKET)/$(CLOUDFUNCTIONS_GCS_PREFIX)/$(GO_PROJECT)/$(CLOUDFUNCTION)/$(VERSION)/function.zip
 
+## Directory containning terraform files used to deploy the cloud function.
+## NOTE: This should be revisited in the future.
+CLOUDFUNCTIONS_DEPLOY_DIR ?= $(PROJECT_DIR)/tooling/terraform/
 
+## Deploys the cloud functions using terraform.
 .PHONY: cloudfunctions-deploy
-CLOUDFUNCTIONS_DEPLOY_DIR ?= $(STARK_BUILD_DIR)/terraform/
-
 cloudfunctions-deploy:
 	cd $(CLOUDFUNCTIONS_DEPLOY_DIR) && \
 	TF_VAR_cloudfunction_version=$(VERSION) terraform apply -auto-approve
