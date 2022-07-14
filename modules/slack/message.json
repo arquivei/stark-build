@@ -17,7 +17,7 @@
         },
         {
           "type": "mrkdwn",
-          "text": "*Version:*\n${VERSION}>"
+          "text": "*Version:*\n${VERSION}"
         }
       ]
     },
