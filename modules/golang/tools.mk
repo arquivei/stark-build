@@ -13,7 +13,7 @@ GO_TOOLS_ARCH ?= amd64
 GO_TOOLS_SWAGGER_VERSION ?= v0.29.0
 
 ## Selects golangci-lint version.
-GO_TOOLS_GOLANGCI_VERSION ?= 1.46.2
+GO_TOOLS_GOLANGCI_VERSION ?= 1.48.0
 
 ## Selects goose version.
 GO_TOOLS_GOOSE_VERSION ?= v3.6.1
