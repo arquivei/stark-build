@@ -41,7 +41,7 @@ go-tools: $(foreach tool,$(GO_TOOLS),$(GO_TOOLS_DIR)/$(tool))
 # See https://goswagger.io/install.html
 .PHONY: $(GO_TOOLS_DIR)/swagger
 $(GO_TOOLS_DIR)/swagger: | $(GO_TOOLS_DIR)
-	@ if ! $@ version | grep -qs "$(GO_SWAGGER_VERSION)"; then \
+	@ if ! $@ version | grep --quiet --no-messages --fixed-strings "$(GO_SWAGGER_VERSION)"; then \
 		echo "Installing $@ version $(GO_TOOLS_SWAGGER_VERSION)"; \
 		curl -o $@ -L'#' "https://github.com/go-swagger/go-swagger/releases/download/$(GO_TOOLS_SWAGGER_VERSION)/swagger_$(GO_TOOLS_OS)_$(GO_TOOLS_ARCH)"; \
 		chmod +x $@; \
@@ -53,7 +53,7 @@ $(GO_TOOLS_DIR)/swagger: | $(GO_TOOLS_DIR)
 # See: https://golangci-lint.run/usage/install/
 .PHONY: $(GO_TOOLS_DIR)/golangci-lint
 $(GO_TOOLS_DIR)/golangci-lint: | $(GO_TOOLS_DIR)
-	@ if ! $@ --version | grep -qs "$(GO_TOOLS_GOLANGCI_VERSION)"; then \
+	@ if ! $@ --version | grep --quiet --no-messages --fixed-strings "$(GO_TOOLS_GOLANGCI_VERSION)"; then \
 		echo "Installing $@ version $(GO_TOOLS_GOLANGCI_VERSION)"; \
 		curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | \
 			sh -s -- -b "$(GO_TOOLS_DIR)" "v$(GO_TOOLS_GOLANGCI_VERSION)"; \
