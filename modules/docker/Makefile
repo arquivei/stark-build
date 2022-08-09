@@ -3,6 +3,15 @@
 ## Module: Docker
 ## This module handles docker image creation and publishing.
 
+## Images to be created are listed by DOCKER_IMAGES variable,
+## and defaults to all directories found directly under 'cmd'
+## path.
+##
+## By default, a scratch image (see stark-build/docker/Dockerfile)
+## will be used. If a custom Dockerfile is needed, a Dockerfile
+## can be added (i.e 'cmd/mybinary/Dockerfile'). Then, the provided
+## Dockerfile will be used instead
+
 #
 # TODO: Translate to english
 # Esse módulo permite construir imagens docker e publicá-las.

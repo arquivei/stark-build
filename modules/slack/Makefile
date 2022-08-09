@@ -16,7 +16,7 @@ $(info [Stark Build] Initializing slack module...)
 # This can be overwritten by redefining this variable in the main Makefile.
 
 ## Message that will be sent to slack
-SLACK_GIT_LOG ?= $(shell git log -1 | sed -e ':a' -e 'N' -e '$$!ba' -e 's/\n/\\n/g' -e 's/"/\\"/g')
+SLACK_GIT_LOG ?= $(shell git log -1 | sed -e ':a' -e 'N' -e '$$!ba' -e 's/\n/\\n/g' -e 's/"/\\\\\\"/g')
 
 ## Message in json format that will be posted to Slack.
 ## The default value is just a simple message that could be used
@@ -33,7 +33,7 @@ $(info [Stark Build]   SLACK_WEBHOOK_URL = $(SLACK_WEBHOOK_URL))
 ## Posts a message to slack.
 .PHONY: slack-send-message
 slack-send-message: require-SLACK_MESSAGE require-SLACK_WEBHOOK_URL
-	GIT_LOG='$(SLACK_GIT_LOG)' \
+	GIT_LOG="$(SLACK_GIT_LOG)" \
 		envsubst < $(SLACK_MESSAGE) | \
 		curl \
 			--header 'Content-type: application/json' \
