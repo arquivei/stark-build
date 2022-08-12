@@ -23,7 +23,6 @@ go-swagger-gen-%:
 .PHONY: go-swagger-serve-%
 go-swagger-serve-%:
 	$(eval CMD=$(@:go-swagger-serve-%=%))
-	@ mkdir -p out/docs
 	$(GO_TOOLS_DIR)/swagger serve -F swagger out/docs/$(CMD).swagger.json
 
 ## Publishes all swagger files into GCP. Variables GO_SWAGGER_PUBLISH_BUCKET
