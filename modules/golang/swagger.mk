@@ -13,12 +13,15 @@ GO_SWAGGER_GEN ?= $(shell ls ./cmd/ 2> /dev/null | awk '{print $$0;}')
 go-swagger-gen: $(foreach CMD,$(GO_SWAGGER_GEN),go-swagger-gen-$(CMD))
 
 # Generates a swagger file of the specified cmd
-.PHONY:
 go-swagger-gen-%:
 	$(eval CMD=$(@:go-swagger-gen-%=%))
 	@ mkdir -p out/docs
 	$(GO_TOOLS_DIR)/swagger generate spec --compact --output=out/docs/$(CMD).swagger.json ./cmd/$(CMD)
 	sed --in-place --regexp-extended 's/"version":"([^"]*)"/"version":"$(VERSION)"/' out/docs/$(CMD).swagger.json
+
+go-swagger-serve-%:
+	$(eval CMD=$(@:go-swagger-serve-%=%))
+	$(GO_TOOLS_DIR)/swagger serve -F swagger out/docs/$(CMD).swagger.json
 
 ## Publishes all swagger files into GCP. Variables GO_SWAGGER_PUBLISH_BUCKET
 ## and GO_SWAGGER_PUBLISH_PATH must be set
@@ -27,7 +30,6 @@ go-swagger-publish: $(foreach CMD,$(GO_SWAGGER_GEN),go-swagger-publish-$(CMD))
 
 # Generates the swagger file for the given cmd.
 # Variables GO_SWAGGER_PUBLISH_BUCKET and GO_SWAGGER_PUBLISH_PATH must be set
-.PHONY: go-swagger-publish-%
 go-swagger-publish-%:
 ifndef GO_SWAGGER_PUBLISH_BUCKET
 	$(error Please set GO_SWAGGER_PUBLISH_BUCKET variable)
