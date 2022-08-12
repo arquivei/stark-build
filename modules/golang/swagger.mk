@@ -20,6 +20,12 @@ go-swagger-gen-%:
 	$(GO_TOOLS_DIR)/swagger generate spec --compact --output=out/docs/$(CMD).swagger.json ./cmd/$(CMD)
 	sed --in-place --regexp-extended 's/"version":"([^"]*)"/"version":"$(VERSION)"/' out/docs/$(CMD).swagger.json
 
+.PHONY: go-swagger-serve-%
+go-swagger-serve-%:
+	$(eval CMD=$(@:go-swagger-serve-%=%))
+	@ mkdir -p out/docs
+	$(GO_TOOLS_DIR)/swagger serve -F swagger out/docs/$(CMD).swagger.json
+
 ## Publishes all swagger files into GCP. Variables GO_SWAGGER_PUBLISH_BUCKET
 ## and GO_SWAGGER_PUBLISH_PATH must be set
 .PHONY: go-swagger-publish
