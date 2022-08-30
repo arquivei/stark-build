@@ -79,6 +79,7 @@ GO_LIB_DIR ?= lib
 GO_LIB_OUTPUT_DIR ?= out/lib
 
 $(info [Stark Build] Initializing golang module...)
+$(info [Stark Build]   GOVERSION = $(shell $(GO) env GOVERSION))
 $(info [Stark Build]   GO_BINS = $(GO_BINS))
 $(info [Stark Build]   COMPRESS_ENABLED = $(COMPRESS_ENABLED))
 $(info [Stark Build]   GO_MINIMUM_COVERAGE = $(GO_MINIMUM_COVERAGE))
@@ -91,7 +92,11 @@ out/bin:
 
 ## Compiles all binaries listed in GO_BINS.
 .PHONY: go-bin
-go-bin: $(foreach BIN,$(GO_BINS),out/bin/$(BIN))
+go-bin:
+	@for BIN in $(GO_BINS); do \
+		echo "[Stark Build] Building '$${BIN}'..."; \
+		$(MAKE) "out/bin/$${BIN}"; \
+	done;
 
 # Generic rule for building binaries
 out/bin/%: vendor | out/bin ## Compiles a command under cmd/<command> into out/bin/<command>
