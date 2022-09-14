@@ -11,6 +11,10 @@ $(info [Stark Build] Initializing git module...)
 ## Default: go-tools vendor git-ensure-clean go-lint go-tests go-ensure-coverage
 GIT_HOOKS_PRECOMMIT ?= go-tools vendor git-ensure-clean go-lint go-tests go-ensure-coverage
 
+## List of targets that will run on post-merge
+## Default: vendor
+GIT_HOOKS_POSTMERGE ?= vendor
+
 ## Directory containing the hooks that should be installed.
 ## Default: $(STARK_BUILD_DIR)modules/git/hooks
 GIT_HOOKS_DIR ?= $(STARK_BUILD_DIR)modules/git/hooks
@@ -32,5 +36,9 @@ git-install-hooks: $(GIT_HOOKS_DIR)
 ## Executes pre-commit hook.
 .PHONY: git-execute-hook-precommit
 git-execute-hook-precommit: $(GIT_HOOKS_PRECOMMIT)
+
+## Executes post-merge hook.
+.PHONY: git-execute-hook-postmerge
+git-execute-hook-postmerge: $(GIT_HOOKS_POSTMERGE)
 
 $(info [Stark Build] Git module loaded.)
