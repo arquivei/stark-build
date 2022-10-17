@@ -15,7 +15,7 @@ GO_TOOLS_SWAGGER_VERSION ?= v0.29.0
 
 ## Selects golangci-lint version.
 ## https://golangci-lint.run/
-GO_TOOLS_GOLANGCI_VERSION ?= 1.49.0
+GO_TOOLS_GOLANGCI_VERSION ?= 1.50.0
 
 ## Selects goose version.
 ## https://github.com/pressly/goose
