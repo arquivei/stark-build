@@ -15,7 +15,7 @@ export VERSION
 
 ## List of enabled Stark Build System modules.
 ## The name of the modules are the directories inside 'modules/' directory.
-STARK_BUILD_MODULES ?= meta git golang cloudfunctions docker slack
+STARK_BUILD_MODULES ?= meta git golang cloudfunctions docker slack sonar
 
 starkbuild_makefile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 
