@@ -10,19 +10,19 @@ GO_TOOLS_OS ?= linux
 GO_TOOLS_ARCH ?= amd64
 
 ## Selects swagger version.
-## https://github.com/go-swagger/go-swagger
-GO_TOOLS_SWAGGER_VERSION ?= v0.29.0
+## https://github.com/go-swagger/go-swagger/releases
+GO_TOOLS_SWAGGER_VERSION ?= v0.30.4
 
 ## Selects golangci-lint version.
-## https://golangci-lint.run/
-GO_TOOLS_GOLANGCI_VERSION ?= 1.50.0
+## https://github.com/golangci/golangci-lint/releases
+GO_TOOLS_GOLANGCI_VERSION ?= 1.50.1
 
 ## Selects goose version.
-## https://github.com/pressly/goose
-GO_TOOLS_GOOSE_VERSION ?= v3.6.1
+## https://github.com/pressly/goose/releases
+GO_TOOLS_GOOSE_VERSION ?= v3.8.0
 
 ## Selects go-junit-report version.
-## https://github.com/jstemmer/go-junit-report
+## https://github.com/jstemmer/go-junit-report/releases
 GO_TOOLS_XUNIT_VERSION ?= v2.0.0
 
 $(info [Stark Build]   GO_TOOLS = $(GO_TOOLS))
