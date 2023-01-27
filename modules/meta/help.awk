@@ -1,12 +1,12 @@
 {
-    if ($0 ~ /^.PHONY: [a-zA-Z\-_0-9%/]+$/) {
+    if ($0 ~ /^.PHONY: [a-zA-Z\-_0-9%]+$/) {
         helpCommand = substr($0, index($0, ":") + 2);
         if (helpMessage) {
             printf "\033[36m%-20s\033[0m %s\n",
                 helpCommand, helpMessage;
             helpMessage = "";
         }
-    } else if ($0 ~ /^[a-zA-Z\-_0-9.%/]+:/) {
+    } else if ($0 ~ /^[a-zA-Z\-_0-9.%]+:/) {
         helpCommand = substr($0, 0, index($0, ":") - 1);
         if (helpMessage) {
             printf "\033[36m%-20s\033[0m %s\n",
