@@ -8,7 +8,7 @@ bin=${2}
 importpath=${3}
 version=${4}
 
-if ! ${bin} -version | grep --quiet --no-messages --fixed-strings "${version}"; then
+if ! ${bin} -version | grep -q -s -F "${version}"; then
     echo "Installing $(basename "${bin}") version ${version}"
     GOBIN=${toolsdir} go install "${importpath}@${version}"
 else
