@@ -24,7 +24,7 @@ print-%: require-%
 ## Updates the Stark Build System to the latest version.
 .PHONY: stark-build-update
 stark-build-update:
-	cd $(STARK_BUILD_DIR) && git pull origin main
+	cd $(STARK_BUILD_DIR) && git fetch --prune --prune-tags && git reset --hard origin/main
 
 ## Prints this help.
 .PHONY: help
