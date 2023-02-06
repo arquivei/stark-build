@@ -7,8 +7,9 @@ toolsdir=${1}
 bin=${2}
 importpath=${3}
 version=${4}
+version_flag=${5}
 
-if ! ${bin} -version | grep -q -s -F "${version}"; then
+if ! ${bin} "${version_flag}" | grep -q -s -F "${version}"; then
     echo "Installing $(basename "${bin}") version ${version}"
     GOBIN=${toolsdir} go install "${importpath}@${version}"
 else
