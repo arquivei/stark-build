@@ -45,30 +45,24 @@ go-tools: $(foreach tool,$(GO_TOOLS),$(GO_TOOLS_DIR)/$(tool))
 # See https://goswagger.io/install.html
 .PHONY: $(GO_TOOLS_DIR)/swagger
 $(GO_TOOLS_DIR)/swagger: | $(GO_TOOLS_DIR)
-	@ if ! $@ version | grep -q -s -F "$(GO_SWAGGER_VERSION)"; then \
-		echo "Installing $@ version $(GO_TOOLS_SWAGGER_VERSION)"; \
-		curl -o $@ -L'#' "https://github.com/go-swagger/go-swagger/releases/download/$(GO_TOOLS_SWAGGER_VERSION)/swagger_$(GO_TOOLS_OS)_$(GO_TOOLS_ARCH)"; \
-		chmod +x $@; \
-	else \
-		echo "$@ already at version $(GO_TOOLS_SWAGGER_VERSION)"; \
-	fi
+	@$(STARK_BUILD_DIR)modules/golang/install-go-tool.sh $(GO_TOOLS_DIR) $@ github.com/go-swagger/go-swagger/cmd/swagger $(GO_TOOLS_SWAGGER_VERSION) version
 
 # Installation script is preferred over `go install`.
 # See: https://golangci-lint.run/usage/install/
 .PHONY: $(GO_TOOLS_DIR)/golangci-lint
 $(GO_TOOLS_DIR)/golangci-lint: | $(GO_TOOLS_DIR)
 	@ if ! $@ --version | grep -q -s -F "$(GO_TOOLS_GOLANGCI_VERSION)"; then \
-		echo "Installing $@ version $(GO_TOOLS_GOLANGCI_VERSION)"; \
+		echo "Installing $(notdir $@) version $(GO_TOOLS_GOLANGCI_VERSION)"; \
 		curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | \
 			sh -s -- -b "$(GO_TOOLS_DIR)" "v$(GO_TOOLS_GOLANGCI_VERSION)"; \
 	else \
-		echo "$@ already at version $(GO_TOOLS_GOLANGCI_VERSION)"; \
+		echo "$(notdir $@) already at version $(GO_TOOLS_GOLANGCI_VERSION)"; \
 	fi
 
 .PHONY: $(GO_TOOLS_DIR)/goose
 $(GO_TOOLS_DIR)/goose: | $(GO_TOOLS_DIR)
-	$(STARK_BUILD_DIR)modules/golang/install-go-tool.sh $(GO_TOOLS_DIR) $@ github.com/pressly/goose/v3/cmd/goose $(GO_TOOLS_GOOSE_VERSION)
+	@$(STARK_BUILD_DIR)modules/golang/install-go-tool.sh $(GO_TOOLS_DIR) $@ github.com/pressly/goose/v3/cmd/goose $(GO_TOOLS_GOOSE_VERSION) -version
 
 .PHONY: $(GO_TOOLS_DIR)/go-junit-report
 $(GO_TOOLS_DIR)/go-junit-report:
-	$(STARK_BUILD_DIR)modules/golang/install-go-tool.sh $(GO_TOOLS_DIR) $@ github.com/jstemmer/go-junit-report/v2 $(GO_TOOLS_XUNIT_VERSION)
+	@$(STARK_BUILD_DIR)modules/golang/install-go-tool.sh $(GO_TOOLS_DIR) $@ github.com/jstemmer/go-junit-report/v2 $(GO_TOOLS_XUNIT_VERSION) -version
