@@ -78,19 +78,19 @@ $(info [Stark Build]   GCR_BASE_URL [Deprecated] = $(GCR_BASE_URL))
 docker-images: $(foreach img,$(DOCKER_IMAGES),docker-image-$(img))
 
 ## Builds a tar file containing all images
-out/docker_images.tar: docker-images require-DOCKER_BASE_IMAGE
-	docker save --output $@ $(foreach img,$(DOCKER_IMAGES),$(DOCKER_BASE_IMAGE)/$(img):$(VERSION))
+out/docker_images.tar: docker-images require-DOCKER_IMAGE_PREFIX
+	docker save --output $@ $(foreach img,$(DOCKER_IMAGES),$(DOCKER_IMAGE_PREFIX)/$(img):$(VERSION))
 
 ## Builds single docker image
 .PHONY: docker-image-%
-docker-image-%: require-DOCKER_BASE_IMAGE
+docker-image-%: require-DOCKER_IMAGE_PREFIX
 	$(eval BINARY = $(@:docker-image-%=%))
 	$(eval DOCKERFILE = $(shell [ -f cmd/$(BINARY)/Dockerfile ] && echo cmd/$(BINARY)/Dockerfile || echo $(STARK_BUILD_DIR)modules/docker/Dockerfile ) )
 	docker build \
 		--build-arg BINARY=out/bin/$(BINARY) \
 		--file $(DOCKERFILE) \
 		--pull \
-		--tag '$(DOCKER_BASE_IMAGE)/$(BINARY):$(VERSION)' \
+		--tag '$(DOCKER_IMAGE_PREFIX)/$(BINARY):$(VERSION)' \
 		.
 
 
@@ -121,6 +121,6 @@ docker-publish-version-%: require-VERSION require-DOCKER_IMAGE_PREFIX require-DO
 ## Removes all local images matching the same base name.
 .PHONY: docker-clean
 docker-clean:
-	docker images -a | grep $(DOCKER_BASE_IMAGE) | awk '{print $$3}' | xargs --no-run-if-empty docker rmi
+	docker images -a | grep $(DOCKER_IMAGE_PREFIX) | awk '{print $$3}' | xargs --no-run-if-empty docker rmi
 
 $(info [Stark Build] Docker module initialized.)
