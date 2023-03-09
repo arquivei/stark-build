@@ -31,7 +31,7 @@ Add the following snippet to your `Makefile`:
 ## Initializes or syncronizes stark build directory.
 .PHONY: stark-build-sync
 stark-build-sync:
-	git submodule update --init --recursive --depth=1 tooling/stark-build/
+	git submodule update --init --recursive tooling/stark-build/
 
 -include tooling/stark-build/Makefile
 ```
@@ -51,7 +51,7 @@ GO_SWAGGER_GEN := API
 # Enables stark-build
 .PHONY: stark-build-sync
 stark-build-sync:
-	git submodule update --init --recursive --depth=1 tooling/stark-build/
+	git submodule update --init --recursive tooling/stark-build/
 
 -include tooling/stark-build/Makefile
 
