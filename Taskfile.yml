@@ -1,0 +1,55 @@
+version: "3"
+
+env:
+  VERSION:
+    sh: echo "$(git describe --tags --always --dirty --broken; git status --porcelain --no-ahead-behind | grep '??' -q && echo "-untracked");"
+
+# includes:
+#   d2: ./build/tasks/d2
+#   go: ./build/tasks/go
+#   hurl: ./build/tasks/hurl
+
+tasks:
+  default:
+    - go-task --list-all
+
+  build:
+    desc: "Compiles everything"
+    deps:
+      - task: go:build
+        vars: { CMD: api }
+      - task: diagrams
+
+  clean:
+    desc: "Cleans everything"
+    deps:
+      - task: go:clean
+
+  diagrams:
+    desc: "Compiles all d2 diagrams in docs/diagrams"
+    cmds:
+      - task: d2:compile
+        vars: { DIAGRAM: "context" }
+      - task: d2:compile
+        vars: { DIAGRAM: "container" }
+
+  acceptance-tests:
+    desc: "Executes all acceptance tests"
+    deps:
+      - task: docker-compose:up
+    cmds:
+      - task: hurl:test
+        vars:
+          ADDRESS: "localhost:8000"
+          DIR: "acceptance_tests"
+
+  docker-compose:up:
+    cmds:
+      - docker-compose up --build --detach
+    status:
+      - test -n "$(docker-compose ps --services)"
+
+  version:
+    silent: true
+    cmds:
+      - echo "{{.VERSION}}"

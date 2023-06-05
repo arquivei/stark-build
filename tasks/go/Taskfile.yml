@@ -1,0 +1,87 @@
+version: "3"
+
+vars:
+  GO_OUTPUT_BIN_DIR: '{{.GO_OUTPUT_BIN_DIR | default "out/bin"}}'
+  GO_UPX_ENABLED: '{{.GO_UPX_ENABLED | default "1"}}'
+  GO_UPX_COMPRESSION: '{{.GO_UPX_COMPRESSION | default "-1"}}'
+
+tasks:
+  lint:
+    desc: "Executes golang-ci linter"
+    deps:
+      - task: install-golangci-lint
+    preconditions:
+      - sh: test -f .golangci.yml
+        msg: "Missing file '.golangci.yml'. Please create one."
+    cmds:
+      - golangci-lint run --verbose
+
+  install-golangci-lint:
+    desc: "Installs golangci-lint into ./bin directory."
+    cmds:
+      - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./bin
+    status:
+      - test -f bin/golangci-lint
+
+  test:
+    desc: "Runs go test on the project."
+    cmds:
+      - go test -v -race ./...
+
+  build:
+    desc: "Builds go application"
+    label: "go-build-{{.CMD}}"
+    preconditions:
+      - sh: '[ -n "{{.CMD}}" ]'
+        msg: "Variable CMD not defined."
+      - sh: test -d "./cmd/{{.CMD}}"
+        msg: 'Directory "./cmd/{{.CMD}}" not found.'
+    vars:
+      GO_OUTPUT_BIN_DIR: '{{.GO_OUTPUT_BIN_DIR | default "out/bin"}}'
+    env:
+      CGO_ENABLED: "0"
+    deps:
+      - task: output-bin-dir
+        vars:
+          GO_OUTPUT_BIN_DIR: "{{.GO_OUTPUT_BIN_DIR}}"
+
+    cmds:
+      - go build -o "{{.GO_OUTPUT_BIN_DIR}}" -ldflags="-s -w -X main.version=${VERSION}" "./cmd/{{.CMD}}"
+      - test "{{.GO_UPX_ENABLED}}" -eq "1" && upx -qq "{{.GO_UPX_COMPRESSION}}" "{{.GO_OUTPUT_BIN_DIR}}/{{.CMD}}" || true
+    sources:
+      - "**.go"
+      - go.mod
+      - go.sum
+    generates:
+      - "out/bin/{{.CMD}}"
+
+  output-bin-dir:
+    internal: true
+    preconditions:
+      - test -n '{{.GO_OUTPUT_BIN_DIR}}'
+    cmds:
+      - mkdir -p '{{.GO_OUTPUT_BIN_DIR}}'
+    status:
+      - test -d '{{.GO_OUTPUT_BIN_DIR}}'
+
+  clean:
+    preconditions:
+      - test -d '{{.GO_OUTPUT_BIN_DIR}}'
+    ignore_error: true
+    cmds:
+      - rm -rf '{{.GO_OUTPUT_BIN_DIR}}'
+
+  docker-build:
+    preconditions:
+      - sh: '[ -n "{{.VERSION}}" ]'
+        msg: "Variable VERSION not defined."
+      - sh: '[ -n "{{.CMD}}" ]'
+        msg: "Variable CMD not defined."
+      - sh: '[ -n "{{.DOCKER_IMAGE_PREFIX}}" ]'
+        msg: "Variable DOCKER_IMAGE_PREFIX not defined."
+    vars:
+      DOCKERFILE:
+        sh: |
+          [ -f cmd/{{.CMD}}/Dockerfile ] && echo cmd/{{.CMD}}/Dockerfile || echo build/tasks/go/Dockerfile
+    cmds:
+      - echo docker build --build-arg CMD={{.CMD}} --file {{.DOCKERFILE}} --pull --tag '{{.DOCKER_IMAGE_PREFIX}}/{{.CMD}}:{{.VERSION}}' .

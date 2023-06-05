@@ -1,0 +1,16 @@
+version: "3"
+
+tasks:
+  compile:
+    desc: "Compiles d2 diagrams into svg or png"
+    internal: true
+    label: "d2-compile-{{.DIAGRAMS_DIR}}-{{.DIAGRAM}}"
+    vars:
+      DIAGRAMS_DIR: '{{.DIAGRAMS_DIR | default "docs/diagrams"}}'
+      DIAGRAMS_OUTPUT_FORMAT: '{{.DIAGRAMS_OUTPUT_FORMAT | default "svg"}}'
+    cmds:
+      - d2 --pad=10 --theme=300 --dark-theme=200 --layout=elk --sketch "{{.DIAGRAMS_DIR}}/{{.DIAGRAM}}.d2" "{{.DIAGRAMS_DIR}}/{{.DIAGRAM}}.{{.DIAGRAMS_OUTPUT_FORMAT}}"
+    sources:
+      - "{{.DIAGRAMS_DIR}}/{{.DIAGRAM}}.d2"
+    generates:
+      - "{{.DIAGRAMS_DIR}}/{{.DIAGRAM}}.{{.DIAGRAMS_OUTPUT_FORMAT}}"

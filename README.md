@@ -6,6 +6,7 @@ This is a build system based on Makefiles that provides compilation and publishi
 
 - [git](https://git-scm.com/)
 - [GNU Make](https://www.gnu.org/software/make/)
+- [go-task/task](https://taskfile.dev/)
 
 ## Setup
 

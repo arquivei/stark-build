@@ -1,0 +1,15 @@
+version: "3"
+
+tasks:
+  test:
+    desc: "Run hurl tests"
+    vars:
+      DIR: "{{.DIR}}"
+      ADDRESS: '{{.ADDRESS | default "localhost:8000"}}'
+      TEST: "{{.TEST}}"
+      FILES: "*.hurl"
+    preconditions:
+      - sh: test -d "{{.DIR}}"
+        msg: "Testing directory missing! Please provide DIR variable."
+    cmds:
+      - hurl --test --color --variable="address={{.ADDRESS}}" --fail-at-end --retry --retry-interval=200 --retry-max-count 4 --connect-timeout=5 {{.DIR}}/{{.FILES}}
