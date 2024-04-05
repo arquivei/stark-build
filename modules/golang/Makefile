@@ -174,7 +174,7 @@ PHONY: .cover/cover.out
 	@rm -rf .cover
 	@mkdir .cover
 	@for SUBPKG in $(shell $(GO) list -mod=vendor ./...) ; do \
-		FILE=$${SUBPKG##$(PKG)/} ; $(GO_TEST) \
+		FILE=$${SUBPKG##$(PKG)/} ; GOEXPERIMENT=nocoverageredesign $(GO_TEST) \
 		-covermode="$(GO_COVER_MODE)" \
 		-coverprofile=".cover/$${FILE////-}.cover" \
 		"$$SUBPKG" | tee -a .cover/stdout.txt || exit 1; \
