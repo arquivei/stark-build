@@ -61,7 +61,7 @@ GCR_BASE_URL ?=
 ## Deprecated: Use DOCKER_IMAGE_PREFIX instead
 GCR_PROJECT ?=
 
-
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Initializing docker module...)
 $(info [Stark Build]   DOCKER_IMAGES = $(DOCKER_IMAGES))
 $(info [Stark Build]   DOCKER_IMAGE_PREFIX = $(DOCKER_IMAGE_PREFIX))
@@ -69,6 +69,7 @@ $(info [Stark Build]   DOCKER_REMOTE = $(DOCKER_REMOTE))
 $(info [Stark Build]   DOCKER_BASE_IMAGE [Deprecated] = $(DOCKER_BASE_IMAGE))
 $(info [Stark Build]   GCR_PROJECT [Deprecated] = $(GCR_PROJECT))
 $(info [Stark Build]   GCR_BASE_URL [Deprecated] = $(GCR_BASE_URL))
+endif
 
 ##
 ## Docker Module Targets
@@ -123,4 +124,6 @@ docker-publish-version-%: require-VERSION require-DOCKER_IMAGE_PREFIX require-DO
 docker-clean:
 	docker images -a | grep $(DOCKER_IMAGE_PREFIX) | awk '{print $$3}' | xargs --no-run-if-empty docker rmi
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Docker module initialized.)
+endif

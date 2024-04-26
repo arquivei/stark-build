@@ -25,8 +25,10 @@ GO_TOOLS_GOOSE_VERSION ?= v3.19.2
 ## https://github.com/jstemmer/go-junit-report/releases
 GO_TOOLS_XUNIT_VERSION ?= v2.1.0
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build]   GO_TOOLS = $(GO_TOOLS))
 $(info [Stark Build]   GO_TOOLS_DIR = $(GO_TOOLS_DIR))
+endif
 
 $(GO_TOOLS_DIR):
 	mkdir -p $(GO_TOOLS_DIR)

@@ -23,10 +23,10 @@ starkbuild_makefile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 STARK_BUILD_DIR := $(dir $(starkbuild_makefile_path))
 
 main_makefile_path := $(abspath $(firstword $(MAKEFILE_LIST)))
-# This is the directory of the project includind this makefile.
+# This is the directory of the project including this Makefile.
 PROJECT_DIR := $(dir $(main_makefile_path))
 
-## Cache directory where modulos may store temporary files.
+## Cache directory where modules may store temporary files.
 STARK_BUILD_CACHE_DIR ?= $(PROJECT_DIR)/.cache/
 
 ifeq ($(VERSION),)
@@ -42,13 +42,17 @@ endif
 # do bash (arch linux, for example) and in others 'sh' is an alias to 'dash' (ubuntu).
 SHELL := /bin/bash
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Initializing Stark Build System...)
 $(info [Stark Build]   STARK_BUILD_DIR = $(STARK_BUILD_DIR))
 $(info [Stark Build]   STARK_BUILD_MODULES = $(STARK_BUILD_MODULES))
 $(info [Stark Build]   STARK_BUILD_CACHE_DIR = $(STARK_BUILD_CACHE_DIR))
 $(info [Stark Build]   PROJECT_DIR = $(PROJECT_DIR))
 $(info [Stark Build]   VERSION = $(VERSION))
+endif
 
 include $(foreach MOD,$(STARK_BUILD_MODULES),$(STARK_BUILD_DIR)/modules/$(MOD)/Makefile)
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Stark Build System initialized. Have a nice day! )
+endif

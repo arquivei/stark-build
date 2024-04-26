@@ -17,7 +17,9 @@ CLOUDFUNCTIONS_SRC_DIR ?= functions/
 # Functions to be build automatically
 CLOUDFUNCTIONS ?= $(shell ls $(CLOUDFUNCTIONS_SRC_DIR) 2>/dev/null)
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Initializing CloudFunctions module...)
+endif
 
 ## Targets
 
@@ -102,4 +104,6 @@ cloudfunctions-deploy:
 cloudfunctions-clean:
 	rm -rf $(CLOUDFUNCTIONS_BIN_DIR)*.zip
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] CloudFunctions module loaded.)
+endif

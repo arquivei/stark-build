@@ -4,7 +4,9 @@
 ##
 ## This module provides slack integration
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Initializing slack module...)
+endif
 
 
 # For this to work you must write the desired message in a json file and
@@ -23,12 +25,14 @@ SLACK_GIT_LOG ?= $(shell git log -1 | sed -e ':a' -e 'N' -e '$$!ba' -e 's/\n/\\n
 ## initially but it's expected that each project will have it's own
 ## message.
 ## Before the message is sent the json is altered using envsubst
-## so we have minimal templating capabilities.
+## so we have minimal template capabilities.
 ## The variable SLACK_GIT_LOG is passed as GIT_LOG to the envsubst.
 SLACK_MESSAGE ?= $(STARK_BUILD_DIR)modules/slack/message.json
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build]   SLACK_MESSAGE = $(SLACK_MESSAGE))
 $(info [Stark Build]   SLACK_WEBHOOK_URL = $(SLACK_WEBHOOK_URL))
+endif
 
 ## Posts a message to slack.
 .PHONY: slack-send-message
@@ -38,4 +42,7 @@ slack-send-message: require-SLACK_MESSAGE require-SLACK_WEBHOOK_URL
 		curl \
 			--header 'Content-type: application/json' \
 			--data-binary @- $(SLACK_WEBHOOK_URL)
+
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Slack module loaded.)
+endif
