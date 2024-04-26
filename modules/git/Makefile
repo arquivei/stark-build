@@ -5,7 +5,9 @@
 ##
 ## This module provides git integration
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Initializing git module...)
+endif
 
 ## List of targets that will run on pre-commit
 ## Default: go-tools vendor git-ensure-clean go-lint go-tests go-ensure-coverage
@@ -41,4 +43,6 @@ git-execute-hook-precommit: $(GIT_HOOKS_PRECOMMIT)
 .PHONY: git-execute-hook-postmerge
 git-execute-hook-postmerge: $(GIT_HOOKS_POSTMERGE)
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Git module loaded.)
+endif

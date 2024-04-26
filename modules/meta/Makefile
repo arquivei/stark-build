@@ -5,7 +5,9 @@
 ## This module handles stuff related to the Stark Build itself
 ## or provides utility targets.
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Initializing meta module...)
+endif
 
 # This target was created inspired by this stackoverflow question:
 # https://stackoverflow.com/questions/4728810/makefile-variable-as-prerequisite/35845931
@@ -33,4 +35,6 @@ help:
 
 .DEFAULT_GOAL := help
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Meta module initialized.)
+endif

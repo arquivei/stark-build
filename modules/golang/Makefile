@@ -78,12 +78,14 @@ GO_COVER_MODE ?= set
 GO_LIB_DIR ?= lib
 GO_LIB_OUTPUT_DIR ?= out/lib
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Initializing golang module...)
 $(info [Stark Build]   GOVERSION = $(shell $(GO) env GOVERSION))
 $(info [Stark Build]   GO_BINS = $(GO_BINS))
 $(info [Stark Build]   COMPRESS_ENABLED = $(COMPRESS_ENABLED))
 $(info [Stark Build]   GO_MINIMUM_COVERAGE = $(GO_MINIMUM_COVERAGE))
 $(info [Stark Build]   GO_LIBS = $(GO_LIBS))
+endif
 
 ## Compilation targets
 
@@ -233,4 +235,6 @@ go-update-vendor:
 include $(STARK_BUILD_DIR)/modules/golang/tools.mk
 include $(STARK_BUILD_DIR)/modules/golang/swagger.mk
 
+ifeq ($(STARK_BUILD_DEBUG),true)
 $(info [Stark Build] Golang module loaded.)
+endif
