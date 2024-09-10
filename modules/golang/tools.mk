@@ -11,15 +11,15 @@ GO_TOOLS_ARCH ?= amd64
 
 ## Selects swagger version.
 ## https://github.com/go-swagger/go-swagger/releases
-GO_TOOLS_SWAGGER_VERSION ?= v0.30.5
+GO_TOOLS_SWAGGER_VERSION ?= v0.31.0
 
 ## Selects golangci-lint version.
 ## https://github.com/golangci/golangci-lint/releases
-GO_TOOLS_GOLANGCI_VERSION ?= 1.57.2
+GO_TOOLS_GOLANGCI_VERSION ?= 1.61.0
 
 ## Selects goose version.
 ## https://github.com/pressly/goose/releases
-GO_TOOLS_GOOSE_VERSION ?= v3.20.0
+GO_TOOLS_GOOSE_VERSION ?= v3.22.0
 
 ## Selects go-junit-report version.
 ## https://github.com/jstemmer/go-junit-report/releases
