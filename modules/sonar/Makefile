@@ -26,7 +26,7 @@ sonar-scan: | require-SONAR_AUTH_TOKEN require-SONAR_URL require-GO_PROJECT
 		--rm \
 		--env SONAR_HOST_URL="${SONAR_URL}" \
 		--env SONAR_LOGIN="${SONAR_AUTH_TOKEN}" \
-		--env SONAR_SCANNER_OPTS="-Dsonar.projectKey=${GO_PROJECT} -Dsonar.sources=. -Dsonar.exclusions=**/*_test.go,**/*.xml,**/*.xsd,**/*.html,**/mock*.go -Dsonar.tests=. -Dsonar.test.inclusions=**/*_test.go -Dsonar.go.coverage.reportPaths=.cover/cover.out -Dsonar.projectVersion=${VERSION}" \
+		--env SONAR_SCANNER_OPTS="-Dsonar.projectKey=${GO_PROJECT} -Dsonar.sources=. -Dsonar.exclusions=**/*_test.go,**/*.xml,**/*.xsd,**/*.html,**/mock_*.go -Dsonar.tests=. -Dsonar.test.inclusions=**/*_test.go -Dsonar.go.coverage.reportPaths=.cover/cover.out -Dsonar.projectVersion=${VERSION}" \
 		--volume "$(CURDIR):/src" \
 		--workdir /src \
 		sonarsource/sonar-scanner-cli
