@@ -55,18 +55,6 @@ GO_TEST   ?= CGO_ENABLED=1 $(GO) test -mod=vendor -tags="$(GOBUILDTAGS)"
 GO_TOOL   ?= $(GO) tool
 GO_BUILD  ?= $(GO) build -mod=vendor -tags="$(GOBUILDTAGS)" -ldflags="-s -w -X main.version=$(VERSION) $(GOLDFLAGS)"
 
-# GO_UPX_COMPRESS_LEVEL sets the compression level for UPX.
-# It goes from '-1' (fastest) to '-9' (best).
-GO_UPX_COMPRESS_LEVEL ?= -1
-# We will always try to compress binaries if possible
-HAS_UPX_AVAILABLE := $(shell command -v upx 2> /dev/null)
-ifndef HAS_UPX_AVAILABLE
-$(warning "Binaries cannot be compressed, upx not available in this system")
-COMPRESS_ENABLED = 0
-else
-COMPRESS_ENABLED ?= 1
-endif
-
 # GO_COVER_MODE sets the coverage mode.
 # https://blog.golang.org/cover
 # The go test command accepts a -covermode flag to set the coverage mode to one of three settings:
@@ -104,9 +92,6 @@ go-bin:
 out/bin/%: vendor | out/bin ## Compiles a command under cmd/<command> into out/bin/<command>
 	$(eval $(file < ./cmd/$(@:out/bin/%=%)/buildenv.mk))
 	CGO_ENABLED=$(CGO_ENABLED) $(GO_BUILD) -o $@ ./cmd/$(@:out/bin/%=%)
-ifeq ($(COMPRESS_ENABLED),1)
-	upx $(GO_UPX_COMPRESS_LEVEL) -qqq $@
-endif
 
 ## Creates and/or syncs the vendor directory.
 .PHONY: vendor
