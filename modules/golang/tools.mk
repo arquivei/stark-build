@@ -15,11 +15,11 @@ GO_TOOLS_SWAGGER_VERSION ?= v0.32.3
 
 ## Selects golangci-lint version.
 ## https://github.com/golangci/golangci-lint/releases
-GO_TOOLS_GOLANGCI_VERSION ?= 2.4.0
+GO_TOOLS_GOLANGCI_VERSION ?= 2.5.0
 
 ## Selects goose version.
 ## https://github.com/pressly/goose/releases
-GO_TOOLS_GOOSE_VERSION ?= v3.25.0
+GO_TOOLS_GOOSE_VERSION ?= v3.26.0
 
 ## Selects go-junit-report version.
 ## https://github.com/jstemmer/go-junit-report/releases
