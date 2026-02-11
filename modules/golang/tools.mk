@@ -11,11 +11,11 @@ GO_TOOLS_ARCH ?= amd64
 
 ## Selects swagger version.
 ## https://github.com/go-swagger/go-swagger/releases
-GO_TOOLS_SWAGGER_VERSION ?= v0.32.3
+GO_TOOLS_SWAGGER_VERSION ?= v0.33.1
 
 ## Selects golangci-lint version.
 ## https://github.com/golangci/golangci-lint/releases
-GO_TOOLS_GOLANGCI_VERSION ?= 2.5.0
+GO_TOOLS_GOLANGCI_VERSION ?= 2.9.0
 
 ## Selects goose version.
 ## https://github.com/pressly/goose/releases
